@@ -9,6 +9,7 @@ from SvdFeatureGenerator import *
 from Word2VecFeatureGenerator import *
 from SentimentFeatureGenerator import *
 #from AlignmentFeatureGenerator import *
+import sys
 
 
 def process():
@@ -19,7 +20,8 @@ def process():
         body_train = pd.read_csv(
             "train_bodies_processed.csv", encoding='utf-8')
         stances_train = pd.read_csv(
-            "train_stances_processed.csv", encoding='utf-8')
+            "../ensemble_learning/subtrain{}/train.csv".format(sys.argv[1]),
+            encoding='utf-8')
         # training set
         train = pd.merge(stances_train, body_train, how='left', on='Body ID')
         targets = ['agree', 'disagree', 'discuss', 'unrelated']
@@ -37,7 +39,8 @@ def process():
             body_test = pd.read_csv(
                 "test_bodies_processed.csv", encoding='utf-8')
             headline_test = pd.read_csv(
-                "test_stances_unlabeled.csv", encoding='utf-8')
+                "../ensemble_learning/subtrain{}/test.csv".format(sys.argv[1]),
+                encoding='utf-8')
             test = pd.merge(headline_test, body_test, how="left", on="Body ID")
 
             data = pd.concat((train, test))  # target = NaN for test set
