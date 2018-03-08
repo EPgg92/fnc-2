@@ -14,7 +14,7 @@ import sys
 
 def process():
 
-    read = False
+    read = True
     if not read:
 
         body_train = pd.read_csv(
@@ -37,7 +37,7 @@ def process():
         test_flag = True
         if test_flag:
             body_test = pd.read_csv(
-                "test_bodies_processed.csv", encoding='utf-8')
+                "train_bodies_processed.csv", encoding='utf-8')
             headline_test = pd.read_csv(
                 "../ensemble_learning/subtrain{}/test.csv".format(sys.argv[1]),
                 encoding='utf-8')
