@@ -9,7 +9,7 @@ from SvdFeatureGenerator import *
 from Word2VecFeatureGenerator import *
 from SentimentFeatureGenerator import *
 # from AlignmentFeatureGenerator import *
-
+import sys
 
 def process():
 
