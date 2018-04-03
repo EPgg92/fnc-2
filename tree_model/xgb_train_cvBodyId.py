@@ -15,8 +15,6 @@ from Word2VecFeatureGenerator import *
 from SentimentFeatureGenerator import *
 from AlignmentFeatureGenerator import *
 from score import *
-import sys
-
 '''
     10-fold cv on 80% of the data (training_ids.txt)
     splitting based on BodyID
@@ -35,7 +33,6 @@ params_xgb = {
     'eval_metric': 'mlogloss',
     'num_class': 4
 }
-
 
 num_round = 1000
 
@@ -64,7 +61,7 @@ def build_data():
     ]
 
     features = [f for g in generators for f in g.read('train')]
-    print {elt.shape[1] for elt in features}
+
     data_x = np.hstack(features)
     print data_x[0, :]
     print 'data_x.shape'
@@ -196,8 +193,7 @@ def train():
 
     # save (id, predicted and probabilities) to csv, for model averaging
     # same row order as predicted
-    stances = pd.read_csv(
-        "../ensemble_learning/subtrain{}/test.csv".format(sys.argv[1]))
+    stances = pd.read_csv("test_stances_unlabeled_processed.csv")
 
     df_output = pd.DataFrame()
     df_output['Headline'] = stances['Headline']
@@ -210,7 +206,7 @@ def train():
     #df_output.to_csv('submission.csv', index=False)
     df_output.to_csv('tree_pred_prob_cor2.csv', index=False)
     df_output[['Headline', 'Body ID', 'Stance']].to_csv(
-        "../result/pred_subtrain{}_test.csv".format(sys.argv[1]), index=False)
+        'tree_pred_cor2.csv', index=False)
 
     print df_output
     print Counter(df_output['Stance'])
