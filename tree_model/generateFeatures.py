@@ -8,13 +8,13 @@ from TfidfFeatureGenerator import *
 from SvdFeatureGenerator import *
 from Word2VecFeatureGenerator import *
 from SentimentFeatureGenerator import *
-#from AlignmentFeatureGenerator import *
+# léfrom AlignmentFeatureGenerator import *
 import sys
 
 
 def process():
 
-    read = True
+    read = False
     if not read:
 
         body_train = pd.read_csv(
@@ -27,8 +27,7 @@ def process():
         targets = ['agree', 'disagree', 'discuss', 'unrelated']
         targets_dict = dict(zip(targets, range(len(targets))))
         train['target'] = map(lambda x: targets_dict[x], train['Stance'])
-        print 'train.shape:'
-        print train.shape
+        print 'train.shape:'pp
         n_train = train.shape[0]
 
         data = train
