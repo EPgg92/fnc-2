@@ -8,7 +8,7 @@ from TfidfFeatureGenerator import *
 from SvdFeatureGenerator import *
 from Word2VecFeatureGenerator import *
 from SentimentFeatureGenerator import *
-# léfrom AlignmentFeatureGenerator import *
+# from AlignmentFeatureGenerator import *
 import sys
 
 
