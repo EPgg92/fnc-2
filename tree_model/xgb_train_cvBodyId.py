@@ -193,7 +193,8 @@ def train():
 
     # save (id, predicted and probabilities) to csv, for model averaging
     # same row order as predicted
-    stances = pd.read_csv("test_stances_unlabeled_processed.csv")
+    stances = pd.read_csv(
+        "../ensemble_learning/subtrain{}/test.csv".format(sys.argv[1]))
 
     df_output = pd.DataFrame()
     df_output['Headline'] = stances['Headline']
@@ -204,9 +205,10 @@ def train():
     df_output['prob_2'] = pred_prob_y[:, 2]
     df_output['prob_3'] = pred_prob_y[:, 3]
     #df_output.to_csv('submission.csv', index=False)
-    df_output.to_csv('tree_pred_prob_cor2.csv', index=False)
+    df_output.to_csv(
+        "../ensemble_learning/result/_{}.csv".format(sys.argv[1]), index=False)
     df_output[['Headline', 'Body ID', 'Stance']].to_csv(
-        'tree_pred_cor2.csv', index=False)
+        "../ensemble_learning/result/_{}.csv".format(sys.argv[1]), index=False)
 
     print df_output
     print Counter(df_output['Stance'])
