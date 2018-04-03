@@ -27,7 +27,7 @@ def process():
         targets = ['agree', 'disagree', 'discuss', 'unrelated']
         targets_dict = dict(zip(targets, range(len(targets))))
         train['target'] = map(lambda x: targets_dict[x], train['Stance'])
-        print 'train.shape:'pp
+        print 'train.shape:'
         n_train = train.shape[0]
 
         data = train
