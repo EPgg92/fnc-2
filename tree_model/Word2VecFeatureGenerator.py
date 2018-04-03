@@ -9,25 +9,26 @@ from helpers import *
 
 class Word2VecFeatureGenerator(FeatureGenerator):
 
-
     def __init__(self, name='word2vecFeatureGenerator'):
         super(Word2VecFeatureGenerator, self).__init__(name)
-
 
     def process(self, df):
 
         print 'generating word2vec features'
-        df["Headline_unigram_vec"] = df["Headline"].map(lambda x: preprocess_data(x, exclude_stopword=False, stem=False))
-        df["articleBody_unigram_vec"] = df["articleBody"].map(lambda x: preprocess_data(x, exclude_stopword=False, stem=False))
-        
+        df["Headline_unigram_vec"] = df["Headline"].map(
+            lambda x: preprocess_data(x, exclude_stopword=False, stem=False))
+        df["articleBody_unigram_vec"] = df["articleBody"].map(
+            lambda x: preprocess_data(x, exclude_stopword=False, stem=False))
+
         n_train = df[~df['target'].isnull()].shape[0]
-        print 'Word2VecFeatureGenerator: n_train:',n_train
+        print 'Word2VecFeatureGenerator: n_train:', n_train
         n_test = df[df['target'].isnull()].shape[0]
-        print 'Word2VecFeatureGenerator: n_test:',n_test
-        
+        print 'Word2VecFeatureGenerator: n_test:', n_test
+
         # 1). document vector built by multiplying together all the word vectors
         # using Google's pre-trained word vectors
-        model = gensim.models.Word2Vec.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
+        model = gensim.models.KeyedVectors.load_word2vec_format(
+            'GoogleNews-vectors-negative300.bin', binary=True)
         print 'model loaded'
 
         Headline_unigram_array = df['Headline_unigram_vec'].values
@@ -35,10 +36,11 @@ class Word2VecFeatureGenerator(FeatureGenerator):
         print Headline_unigram_array
         print Headline_unigram_array.shape
         print type(Headline_unigram_array)
-        
+
         # word vectors weighted by normalized tf-idf coefficient?
         #headlineVec = [0]
-        headlineVec = map(lambda x: reduce(np.add, [model[y] for y in x if y in model], [0.]*300), Headline_unigram_array)
+        headlineVec = map(lambda x: reduce(np.add, [model[y] for y in x if y in model], [
+                          0.] * 300), Headline_unigram_array)
         headlineVec = np.array(headlineVec)
         print 'headlineVec:'
         print headlineVec
@@ -49,7 +51,7 @@ class Word2VecFeatureGenerator(FeatureGenerator):
         print 'headlineVec'
         print headlineVec
         print headlineVec.shape
-        
+
         headlineVecTrain = headlineVec[:n_train, :]
         outfilename_hvec_train = "train.headline.word2vec.pkl"
         with open(outfilename_hvec_train, "wb") as outfile:
@@ -70,7 +72,8 @@ class Word2VecFeatureGenerator(FeatureGenerator):
         print Body_unigram_array
         print Body_unigram_array.shape
         #bodyVec = [0]
-        bodyVec = map(lambda x: reduce(np.add, [model[y] for y in x if y in model], [0.]*300), Body_unigram_array)
+        bodyVec = map(lambda x: reduce(
+            np.add, [model[y] for y in x if y in model], [0.] * 300), Body_unigram_array)
         bodyVec = np.array(bodyVec)
         bodyVec = normalize(bodyVec)
         print 'bodyVec'
@@ -82,7 +85,7 @@ class Word2VecFeatureGenerator(FeatureGenerator):
         with open(outfilename_bvec_train, "wb") as outfile:
             cPickle.dump(bodyVecTrain, outfile, -1)
         print 'body word2vec features of training set saved in %s' % outfilename_bvec_train
-        
+
         if n_test > 0:
             # test set is available
             bodyVecTest = bodyVec[n_train:, :]
@@ -94,7 +97,8 @@ class Word2VecFeatureGenerator(FeatureGenerator):
         print 'body done'
 
         # compute cosine similarity between headline/body word2vec features
-        simVec = np.asarray(map(cosine_sim, headlineVec, bodyVec))[:, np.newaxis]
+        simVec = np.asarray(map(cosine_sim, headlineVec, bodyVec))[
+            :, np.newaxis]
         print 'simVec.shape:'
         print simVec.shape
 
@@ -103,7 +107,7 @@ class Word2VecFeatureGenerator(FeatureGenerator):
         with open(outfilename_simvec_train, "wb") as outfile:
             cPickle.dump(simVecTrain, outfile, -1)
         print 'word2vec sim. features of training set saved in %s' % outfilename_simvec_train
-        
+
         if n_test > 0:
             # test set is available
             simVecTest = simVec[n_train:]
@@ -130,25 +134,25 @@ class Word2VecFeatureGenerator(FeatureGenerator):
 
         print 'headlineVec.shape:'
         print headlineVec.shape
-        #print type(headlineVec)
+        # print type(headlineVec)
         print 'bodyVec.shape:'
         print bodyVec.shape
-        #print type(bodyVec)
+        # print type(bodyVec)
         print 'simVec.shape:'
         print simVec.shape
-        #print type(simVec)
+        # print type(simVec)
 
         return [headlineVec, bodyVec, simVec]
-        #return [simVec.reshape(-1,1)]
+        # return [simVec.reshape(-1,1)]
 
  #   Copyright 2017 Cisco Systems, Inc.
- #  
+ #
  #   Licensed under the Apache License, Version 2.0 (the "License");
  #   you may not use this file except in compliance with the License.
  #   You may obtain a copy of the License at
- #  
+ #
  #     http://www.apache.org/licenses/LICENSE-2.0
- #  
+ #
  #   Unless required by applicable law or agreed to in writing, software
  #   distributed under the License is distributed on an "AS IS" BASIS,
  #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
