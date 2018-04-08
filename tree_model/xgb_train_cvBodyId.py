@@ -40,7 +40,7 @@ num_round = 1000
 def build_data():
 
     # create target variable
-    body = pd.read_csv("train_bodies.csv")
+    body = pd.read_csv("train_bodies_processed.csv")
     stances = pd.read_csv(
         "../ensemble_learning/subtrain{}/train.csv".format(sys.argv[1]))
     data = pd.merge(stances, body, how='left', on='Body ID')
