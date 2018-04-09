@@ -53,7 +53,7 @@ def build_data():
     # read features
     generators = [
         CountFeatureGenerator(),
-        TfidfFeatureGenerator(),
+        # TfidfFeatureGenerator(),
         SvdFeatureGenerator(),
         Word2VecFeatureGenerator(),
         SentimentFeatureGenerator()
@@ -61,7 +61,7 @@ def build_data():
     ]
 
     features = [f for g in generators for f in g.read('train')]
-    [print(len(f)) for f in features]
+    print [f.shape for f in features]
     data_x = np.hstack(features)
     print data_x[0, :]
     print 'data_x.shape'
@@ -91,7 +91,7 @@ def build_test_data():
     # read features
     generators = [
         CountFeatureGenerator(),
-        TfidfFeatureGenerator(),
+        # TfidfFeatureGenerator(),
         SvdFeatureGenerator(),
         Word2VecFeatureGenerator(),
         SentimentFeatureGenerator()
