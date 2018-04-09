@@ -1,5 +1,7 @@
 import os
 for x in range(10):
+    print('clean tmp')
+    os.system('bash cleantmp.sh')
     print(x)
     print('python generateFeatures.py {}'.format(x))
     os.system('python generateFeatures.py {}'.format(x))
