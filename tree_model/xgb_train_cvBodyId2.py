@@ -40,8 +40,8 @@ num_round = 1000
 def build_data():
 
     # create target variable
-    body = pd.read_csv("train_bodies.csv")
-    stances = pd.read_csv("train_stances.csv")
+    body = pd.read_csv("train_bodies_processed.csv")
+    stances = pd.read_csv("train_stances_processed.csv")
     data = pd.merge(stances, body, how='left', on='Body ID')
     targets = ['agree', 'disagree', 'discuss', 'unrelated']
     targets_dict = dict(zip(targets, range(len(targets))))
@@ -81,7 +81,7 @@ def build_test_data():
 
     # create target variable
     # replace file names when test data is ready
-    body = pd.read_csv("test_bodies.csv")
+    body = pd.read_csv("test_bodies_processed.csv")
     # needs to contain pair id
     stances = pd.read_csv("test_stances_unlabeled.csv")
     data = pd.merge(stances, body, how='left', on='Body ID')
