@@ -191,7 +191,7 @@ def train():
 
     # save (id, predicted and probabilities) to csv, for model averaging
     # same row order as predicted
-    stances = pd.read_csv("test_stances_unlabeled_processed.csv")
+    stances = pd.read_csv("test_stances_unlabeled.csv")
 
     df_output = pd.DataFrame()
     df_output['Headline'] = stances['Headline']
