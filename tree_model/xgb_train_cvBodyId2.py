@@ -52,7 +52,7 @@ def build_data():
     # read features
     generators = [
         CountFeatureGenerator(),
-        TfidfFeatureGenerator(),
+        # TfidfFeatureGenerator(),
         SvdFeatureGenerator(),
         Word2VecFeatureGenerator(),
         SentimentFeatureGenerator()
@@ -89,7 +89,7 @@ def build_test_data():
     # read features
     generators = [
         CountFeatureGenerator(),
-        TfidfFeatureGenerator(),
+        # TfidfFeatureGenerator(),
         SvdFeatureGenerator(),
         Word2VecFeatureGenerator(),
         SentimentFeatureGenerator()
